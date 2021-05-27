@@ -1,3 +1,3 @@
-/build
-/nbprojetc
-/test
+build/
+nbprojetc/
+test/
