@@ -5,6 +5,10 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.model.Produto;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author laris
@@ -14,8 +18,9 @@ public class GuiProduto extends javax.swing.JFrame {
     /**
      * Creates new form GuiProduto
      */
-    public GuiProduto() {
+    public GuiProduto(ArrayList<Produto> cadProd) {
         initComponents();
+        cadastro = cadProd;
     }
 
     /**
@@ -42,6 +47,8 @@ public class GuiProduto extends javax.swing.JFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        txtUnidadeMedida = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Produto");
@@ -66,18 +73,38 @@ public class GuiProduto extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Consultar.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Inserir.png"))); // NOI18N
         btnIncluir.setText("Incluir");
         btnIncluir.setEnabled(false);
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Remover.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Sair.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -87,6 +114,10 @@ public class GuiProduto extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Unidade de Medida");
+
+        txtUnidadeMedida.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,8 +125,24 @@ public class GuiProduto extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(btnConsultar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnIncluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAlterar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSair))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtUnidadeMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -115,18 +162,7 @@ public class GuiProduto extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDescricao)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(btnConsultar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnIncluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAlterar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSair)))
+                                    .addComponent(txtDescricao))))))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -151,14 +187,18 @@ public class GuiProduto extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(txtEstoqueMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtQtdeDisponivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtUnidadeMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConsultar)
                     .addComponent(btnIncluir)
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluir)
                     .addComponent(btnSair))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -168,39 +208,141 @@ public class GuiProduto extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuiProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuiProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuiProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuiProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        if(!isNumeric(txtCodigo.getText())){
+            JOptionPane.showMessageDialog(rootPane, 
+                    "Confira o código e tente novamente", 
+                    "Código Inválido", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            txtCodigo.requestFocus();
+            return;
         }
-        //</editor-fold>
+        
+        
+        int x;
+        for (x = 0; x < cadastro.size(); x++){             
+               if (cadastro.get(x).getCodigo() == Integer.parseInt(txtCodigo.getText())){
+                   break;
+               }
+        }
+        if (x < cadastro.size()){
+           posProd = x; 
+        }else{
+           posProd = -1;
+        } 
+        if (posProd >= 0){
+            txtDescricao.setText(cadastro.get(posProd).getDescricao());
+            txtQtdeDisponivel.setText(String.valueOf(cadastro.get(posProd).getQtdeEstoque()));
+            txtPrecoUnit.setText(String.valueOf(cadastro.get(posProd).getPreco()));
+            txtEstoqueMin.setText(String.valueOf(cadastro.get(posProd).getEstoqueMinimo()));
+            txtUnidadeMedida.setText(cadastro.get(posProd).getUnidadeMedida());
+            btnConsultar.setEnabled(false);
+            btnIncluir.setEnabled(false);
+            btnAlterar.setEnabled(true);
+            btnExcluir.setEnabled(true);
+        }else{
+            btnConsultar.setEnabled(false);
+            btnIncluir.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+            txtDescricao.requestFocus();
+        }
+        txtCodigo.setEnabled(false);
+        txtDescricao.setEnabled(true);   
+        txtQtdeDisponivel.setEnabled(true); 
+        txtPrecoUnit.setEnabled(true); 
+        txtEstoqueMin.setEnabled(true);
+        txtUnidadeMedida.setEnabled(true);
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GuiProduto().setVisible(true);
-            }
-        });
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        Produto prod = new Produto(Integer.parseInt(txtCodigo.getText()),txtDescricao.getText());
+        prod.setEstoqueMinimo(Double.parseDouble(txtEstoqueMin.getText()));
+        prod.setPreco(Double.parseDouble(txtPrecoUnit.getText()));
+        prod.setQtdeEstoque(Double.parseDouble(txtQtdeDisponivel.getText()));
+        prod.setUnidadeMedida(txtUnidadeMedida.getText());
+        cadastro.add(prod);
+        
+        txtCodigo.setText(null);
+        txtDescricao.setText(null);
+        txtQtdeDisponivel.setText(null);
+        txtPrecoUnit.setText(null);
+        txtEstoqueMin.setText(null);
+        txtUnidadeMedida.setText(null);
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        txtCodigo.setEnabled(true);
+        txtDescricao.setEnabled(false);   
+        txtQtdeDisponivel.setEnabled(false); 
+        txtPrecoUnit.setEnabled(false); 
+        txtEstoqueMin.setEnabled(false);
+        txtUnidadeMedida.setEnabled(false);
+        txtCodigo.requestFocus();
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        txtCodigo.setEnabled(false);
+        cadastro.get(posProd).setDescricao(txtDescricao.getText());
+        cadastro.get(posProd).setEstoqueMinimo(Double.parseDouble(txtEstoqueMin.getText()));
+        cadastro.get(posProd).setPreco(Double.parseDouble(txtPrecoUnit.getText()));
+        cadastro.get(posProd).setQtdeEstoque(Double.parseDouble(txtQtdeDisponivel.getText()));
+        cadastro.get(posProd).setUnidadeMedida(txtUnidadeMedida.getText());
+        
+        txtCodigo.setText(null);
+        txtDescricao.setText(null);
+        txtQtdeDisponivel.setText(null);
+        txtPrecoUnit.setText(null);
+        txtEstoqueMin.setText(null);
+        txtUnidadeMedida.setText(null);
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        txtCodigo.setEnabled(true);
+        txtDescricao.setEnabled(false);   
+        txtQtdeDisponivel.setEnabled(false); 
+        txtPrecoUnit.setEnabled(false); 
+        txtEstoqueMin.setEnabled(false);
+        txtUnidadeMedida.setEnabled(false);
+        txtCodigo.requestFocus();
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (posProd >= 0){
+            cadastro.remove(posProd);
+            posProd = -1;
+        }
+        txtCodigo.setText(null);
+        txtDescricao.setText(null);
+        txtQtdeDisponivel.setText(null);
+        txtPrecoUnit.setText(null);
+        txtEstoqueMin.setText(null);
+        txtUnidadeMedida.setText(null);
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        txtCodigo.setEnabled(true);
+        txtDescricao.setEnabled(false);   
+        txtQtdeDisponivel.setEnabled(false); 
+        txtPrecoUnit.setEnabled(false); 
+        txtEstoqueMin.setEnabled(false);
+        txtUnidadeMedida.setEnabled(false);
+        txtCodigo.requestFocus();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+    public static boolean isNumeric(String string) {
+        if(string == null || string.equals("")) {
+            return false;
+        }
+
+        try {
+            Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -214,10 +356,14 @@ public class GuiProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtEstoqueMin;
     private javax.swing.JTextField txtPrecoUnit;
     private javax.swing.JTextField txtQtdeDisponivel;
+    private javax.swing.JTextField txtUnidadeMedida;
     // End of variables declaration//GEN-END:variables
+    private ArrayList<Produto> cadastro;
+    private int posProd;
 }

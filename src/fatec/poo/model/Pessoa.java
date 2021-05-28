@@ -1,5 +1,7 @@
 package fatec.poo.model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Larissa e Hector
@@ -16,6 +18,42 @@ public class Pessoa {
 
     public Pessoa(String cpf, String nome) {
         this.cpf = cpf;
+        this.nome = nome;
+    }
+    
+    public static boolean validarCPF(String cpf){
+        char[] chars = cpf.toCharArray();
+        ArrayList<Integer> digits = new ArrayList<>();
+        System.out.print("Digits:");
+        for(char item: chars){
+            int digit = Character.getNumericValue(item);
+            if(digit >=0 && digit <= 9){
+                digits.add(digit);
+              
+              System.out.print(digit);
+              
+            }
+            
+        }
+        System.out.println();  
+        int firstDigit = 0, secondDigit = 0;
+        for(int i = 0; i < digits.size() - 2; i++){
+            firstDigit += digits.get(i)*(i+1);
+        }
+        
+        firstDigit = (firstDigit%11 == 10) ? 0 : firstDigit%11;
+        System.out.println("First: " + firstDigit);
+        secondDigit = firstDigit*2;
+        for(int i = 0; i < digits.size() - 2; i++){
+            secondDigit += digits.get(i)*(11-i);
+        }
+        secondDigit = (secondDigit*10 % 11 == 10)? 0 : secondDigit*10 % 11;
+        System.out.println("Second: " + secondDigit);
+        System.out.println("In the list: " + digits.get(9)+ digits.get(10));
+        return firstDigit == digits.get(9) && secondDigit == digits.get(10);
+    }
+    
+    public void setNome(String nome) {
         this.nome = nome;
     }
 

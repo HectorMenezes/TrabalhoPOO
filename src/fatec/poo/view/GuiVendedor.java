@@ -5,6 +5,11 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.model.Pessoa;
+import fatec.poo.model.Vendedor;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author laris
@@ -14,8 +19,9 @@ public class GuiVendedor extends javax.swing.JFrame {
     /**
      * Creates new form GuiVendedor
      */
-    public GuiVendedor() {
+    public GuiVendedor(ArrayList<Pessoa> cadVend) {
         initComponents();
+        cadastro = cadVend;
     }
 
     /**
@@ -100,18 +106,38 @@ public class GuiVendedor extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Consultar.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Inserir.png"))); // NOI18N
         btnIncluir.setText("Incluir");
         btnIncluir.setEnabled(false);
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Remover.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Sair.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -240,40 +266,169 @@ public class GuiVendedor extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuiVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuiVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuiVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuiVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        if(!Pessoa.validarCPF(txtCPF.getText())){
+            JOptionPane.showMessageDialog(rootPane, 
+                    "Confira o CPF e tente novamente", 
+                    "CPF Inválido", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            txtCPF.requestFocus();
+            return;
         }
-        //</editor-fold>
+        int x;
+        for (x = 0; x < cadastro.size(); x++){             
+               if (cadastro.get(x).getCpf().equals(txtCPF.getText())){
+                   break;
+               }
+        }
+        if (x < cadastro.size()){
+           posVend = x; 
+        }else{
+           posVend = -1;
+        } 
+        if(posVend >= 0){
+            txtNome.setText(cadastro.get(posVend).getNome());
+            txtEndereco.setText(cadastro.get(posVend).getEndereco());
+            txtCidade.setText(cadastro.get(posVend).getCidade());
+            cbxUF.setSelectedItem(cadastro.get(posVend).getUf());
+            txtCEP.setText(cadastro.get(posVend).getCep());
+            txtDDD.setText(cadastro.get(posVend).getDdd());
+            txtTelefone.setText(cadastro.get(posVend).getTelefone());
+            txtSalBase.setText(String.valueOf(((Vendedor)cadastro.get(posVend)).getSalarioBase()));
+            txtTaxaComissao.setText(String.valueOf(((Vendedor)cadastro.get(posVend)).getTaxaComissao()));
+            btnConsultar.setEnabled(false);
+            btnIncluir.setEnabled(false);
+            btnAlterar.setEnabled(true);
+            btnExcluir.setEnabled(true);
+        }else{
+            btnConsultar.setEnabled(false);
+            btnIncluir.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+            txtNome.requestFocus();
+        }
+        txtCPF.setEnabled(false);
+        txtNome.setEnabled(true);
+        txtEndereco.setEnabled(true);
+        txtCidade.setEnabled(true);
+        cbxUF.setEnabled(true);
+        txtCEP.setEnabled(true);
+        txtDDD.setEnabled(true);
+        txtTelefone.setEnabled(true);
+        txtSalBase.setEnabled(true);
+        txtTaxaComissao.setEnabled(true);
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GuiVendedor().setVisible(true);
-            }
-        });
-    }
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        Pessoa vend = new Vendedor(Double.parseDouble(txtSalBase.getText()),txtCPF.getText(),txtNome.getText());
+        vend.setCep(txtCEP.getText());
+        vend.setCidade(txtCidade.getText());
+        vend.setDdd(txtDDD.getText());
+        vend.setTelefone(txtTelefone.getText());
+        vend.setEndereco(txtEndereco.getText());
+        ((Vendedor)vend).setTaxaComissao(Double.parseDouble(txtTaxaComissao.getText()));
+        vend.setUf(String.valueOf(cbxUF.getSelectedItem()));
+        cadastro.add(vend);
+        
+        txtCPF.setText(null);
+        txtNome.setText(null);
+        txtEndereco.setText(null);
+        txtCidade.setText(null);
+        cbxUF.setSelectedIndex(0);
+        txtCEP.setText(null);
+        txtDDD.setText(null);
+        txtTelefone.setText(null);
+        txtSalBase.setText(null);
+        txtTaxaComissao.setText(null);
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        txtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        txtCidade.setEnabled(false);
+        cbxUF.setEnabled(false);
+        txtCEP.setEnabled(false);
+        txtDDD.setEnabled(false);
+        txtTelefone.setEnabled(false);
+        txtSalBase.setEnabled(false);
+        txtTaxaComissao.setEnabled(false);
+        txtCPF.requestFocus();
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        txtCPF.setEnabled(false);
+        cadastro.get(posVend).setNome(txtNome.getText());
+        cadastro.get(posVend).setCep(txtCEP.getText());
+        cadastro.get(posVend).setCidade(txtCidade.getText());
+        cadastro.get(posVend).setDdd(txtDDD.getText());
+        cadastro.get(posVend).setEndereco(txtEndereco.getText());
+        cadastro.get(posVend).setTelefone(txtTelefone.getText());
+        cadastro.get(posVend).setUf(String.valueOf(cbxUF.getSelectedItem()));
+        ((Vendedor)cadastro.get(posVend)).setSalarioBase(Double.parseDouble(txtSalBase.getText()));
+        ((Vendedor)cadastro.get(posVend)).setTaxaComissao(Double.parseDouble(txtTaxaComissao.getText()));
+        
+        txtCPF.setText(null);
+        txtNome.setText(null);
+        txtEndereco.setText(null);
+        txtCidade.setText(null);
+        cbxUF.setSelectedIndex(0);
+        txtCEP.setText(null);
+        txtDDD.setText(null);
+        txtTelefone.setText(null);
+        txtSalBase.setText(null);
+        txtTaxaComissao.setText(null);
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        txtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        txtCidade.setEnabled(false);
+        cbxUF.setEnabled(false);
+        txtCEP.setEnabled(false);
+        txtDDD.setEnabled(false);
+        txtTelefone.setEnabled(false);
+        txtSalBase.setEnabled(false);
+        txtTaxaComissao.setEnabled(false);
+        txtCPF.requestFocus();
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (posVend >= 0){
+            cadastro.remove(posVend);
+            posVend = -1;
+        }
+        
+        txtCPF.setText(null);
+        txtNome.setText(null);
+        txtEndereco.setText(null);
+        txtCidade.setText(null);
+        cbxUF.setSelectedIndex(0);
+        txtCEP.setText(null);
+        txtDDD.setText(null);
+        txtTelefone.setText(null);
+        txtSalBase.setText(null);
+        txtTaxaComissao.setText(null);
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        txtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        txtCidade.setEnabled(false);
+        cbxUF.setEnabled(false);
+        txtCEP.setEnabled(false);
+        txtDDD.setEnabled(false);
+        txtTelefone.setEnabled(false);
+        txtSalBase.setEnabled(false);
+        txtTaxaComissao.setEnabled(false);
+        txtCPF.requestFocus();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
@@ -301,4 +456,6 @@ public class GuiVendedor extends javax.swing.JFrame {
     private javax.swing.JTextField txtTaxaComissao;
     private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
+    private ArrayList<Pessoa> cadastro;
+    private int posVend;
 }
